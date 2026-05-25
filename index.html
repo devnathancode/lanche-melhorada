@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerTest | Lanches, Açaí e Bebidas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #ff3838;
+            --secondary-color: #ffb300;
+            --dark-color: #121212;
+            --card-color: #1e1e1e;
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 20px;
+            max-width: 600px; /* Otimizado para visualização mobile */
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: rgba(18, 18, 18, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #2a2a2a;
+            backdrop-filter: blur(5px);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .status-badge {
+            background-color: #2ed573;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 40px 0 20px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- CATEGORIAS --- */
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0 20px 0;
+            scrollbar-width: none; /* Esconde barra no Firefox */
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none; /* Esconde barra no Chrome/Safari */
+        }
+
+        .cat-btn {
+            background-color: var(--card-color);
+            color: var(--text-color);
+            border: 1px solid #333;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cat-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* --- CARDÁPIO (SECTIONS) --- */
+        .menu-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* --- CARDS DE PRODUTO --- */
+        .product-card {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: flex;
+            border: 1px solid #2a2a2a;
+        }
+
+        .product-img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        .order-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .order-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #0b0b0b;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 20px;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-socials {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- BOTÃO FLUTUANTE DO WHATSAPP --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">Burger<span>Test</span></div>
+            <div class="status-badge"><i class="fa-solid fa-circle" style="font-size: 8px; margin-right: 5px;"></i> Aberto</div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section class="hero">
+            <h1>Bateu aquela fome?</h1>
+            <p>Os melhores lanches, açaís artesanais e bebidas trincando a um clique de você.</p>
+        </section>
+
+        <div class="categories">
+            <button class="cat-btn active" onclick="scrollToSection('lanches')">Lanches</button>
+            <button class="cat-btn" onclick="scrollToSection('acai')">Açaís</button>
+            <button class="cat-btn" onclick="scrollToSection('bebidas')">Bebidas</button>
+        </div>
+
+        <section id="lanches" class="menu-section">
+            <h2 class="section-title">Burgers Artesanais</h2>
+            
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="X-Burger" class="product-img">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Classic Burger</h3>
+                        <p class="product-desc">Blend bovino 150g, queijo cheddar derretido, alface, tomate e maionese da casa no pão brioche.</p>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">R$ 24,90</span>
+                        <button class="order-btn" onclick="fazerPedido('Classic Burger', 'R$ 24,90')">Pedir Agora</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80" alt="X-Bacon" class="product-img">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Double Bacon</h3>
+                        <p class="product-desc">Dois blends de 120g, muito bacon crocante, queijo duplo e molho barbecue artesanal.</p>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">R$ 32,90</span>
+                        <button class="order-btn" onclick="fazerPedido('Double Bacon', 'R$ 32,90')">Pedir Agora</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="acai" class="menu-section">
+            <h2 class="section-title">Açaí Na Tigela</h2>
+            
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400&q=80" alt="Açaí Tradicional" class="product-img">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Açaí Turbo 500ml</h3>
+                        <p class="product-desc">Açaí cremoso pura polpa. Acompanha leite em pó, leite condensado, banana e granola crocante.</p>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">R$ 18,00</span>
+                        <button class="order-btn" onclick="fazerPedido('Açaí Turbo 500ml', 'R$ 18,00')">Pedir Agora</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bebidas" class="menu-section">
+            <h2 class="section-title">Bebidas e Refrigerantes</h2>
+            
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80" alt="Coca-cola" class="product-img">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Coca-Cola Lata</h3>
+                        <p class="product-desc">Lata de 350ml trincando de gelada para acompanhar seu lanche.</p>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">R$ 6,00</span>
+                        <button class="order-btn" onclick="fazerPedido('Coca-Cola Lata', 'R$ 6,00')">Pedir Agora</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BurgerTest. Todos os direitos reservados.</p>
+        <div class="footer-socials">
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5500999999999?text=Olá! Gostaria de ver o cardápio." class="whatsapp-float" target="_blank" id="wpp-main">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Insira o número do seu WhatsApp abaixo (Apenas números: Código do país + DDD + Número)
+        // Exemplo: 55 11 999999999
+        const NUMERO_WHATSAPP = "5500999999999"; 
+
+        // Atualiza o link do botão flutuante principal com o número correto
+        document.getElementById('wpp-main').href = `https://wa.me/${NUMERO_WHATSAPP}?text=Olá! Gostaria de fazer um pedido.`;
+
+        // Função para realizar o pedido direto de um item do cardápio
+        function fazerPedido(nomeProduto, precoProduto) {
+            const mensagem = `Olá, BurgerTest! Gostaria de pedir o seguinte item:\n\n*Produto:* ${nomeProduto}\n*Valor:* ${precoProduto}\n\nPor favor, envie as opções de entrega e formas de pagamento!`;
+            
+            // Codifica a mensagem para o formato de URL
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            
+            // Cria o link definitivo para o WhatsApp
+            const urlLink = `https://wa.me/${NUMERO_WHATSAPP}?text=${mensagemCodificada}`;
+            
+            // Abre o WhatsApp em uma nova aba/aplicativo móvel
+            window.open(urlLink, '_blank');
+        }
+
+        // Navegação suave ao clicar nas categorias
+        function scrollToSection(id) {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                window.scrollTo({
+                    top: elemento.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Altera classe ativa nos botões superior de categoria
+            const botoes = document.querySelectorAll('.cat-btn');
+            botoes.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
